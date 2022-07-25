@@ -1,7 +1,11 @@
+import { signOut } from "firebase/auth";
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
+import auth from "./../firebase.init";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const Sidebar = ({ children }) => {
+  const [user] = useAuthState(auth);
   const menuItems = (
     <>
       <li>
@@ -10,6 +14,17 @@ const Sidebar = ({ children }) => {
       <li>
         <Link to="/profile">Profile</Link>
       </li>
+      {user && (
+        <li>
+          <Link
+            to="/login"
+            onClick={() => signOut(auth)}
+            className="btn btn-md btn-dark w-1/2 rounded-none"
+          >
+            Logout
+          </Link>
+        </li>
+      )}
     </>
   );
   return (
